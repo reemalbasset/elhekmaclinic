@@ -77,9 +77,40 @@ public class RouteController {
     }
 
     @GetMapping("appointmentreview")
-    public ModelAndView appointmentreviewpage() {
-        return new ModelAndView("appointmentreview.html");
+    public String appointmentreviewpageusr(HttpSession session, Model model) {
+        String username = (String) session.getAttribute("username");
+
+        if (username == null) {
+            model.addAttribute("error", "User is not logged in.");
+            return "login"; // Redirect to login page if the user is not logged in
+        }
+
+        List<Appointment> appointments = appointmentRepository.findByUsername(username);
+        model.addAttribute("appointments", appointments);
+
+        return "appointmentreview"; // The name of the view to display the appointments
     }
+
+   @PostMapping("deleteAppointment")
+public RedirectView deleteAppointment(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+    try {
+        // Check if the doctor exists
+        Optional<Appointment> appointmentOptional = appointmentRepository.findById(id);
+        if (appointmentOptional.isPresent()) {
+            // Delete the doctor from the database
+            appointmentRepository.deleteById(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Appointment deleted successfully.");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Appointment not found.");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        redirectAttributes.addFlashAttribute("errorMessage", "An error occurred while deleting appointment.");
+    }
+    
+    // Redirect back to the view_doctors page after deletion
+    return new RedirectView("/User/Profile", true);
+}
 
     @GetMapping("specialities")
     public ModelAndView specialitiespageIndex() {

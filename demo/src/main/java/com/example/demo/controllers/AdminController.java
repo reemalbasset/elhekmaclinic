@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.example.demo.models.Appointment;
 import com.example.demo.models.Doctor;
 import com.example.demo.models.Nurse;
 import com.example.demo.models.Patient;
@@ -28,7 +29,7 @@ import com.example.demo.repositories.DoctorRepository;
 import com.example.demo.repositories.NurseRepository;
 import com.example.demo.repositories.PatientRepository;
 import com.example.demo.repositories.UserRepositry;
-
+import com.example.demo.repositories.AppointmentRepository;
 
 
 
@@ -42,6 +43,8 @@ public class AdminController {
     @Autowired
     private UserRepositry AdminRepositry;
     private UserRepositry UserRepositry;
+    @Autowired
+    private AppointmentRepository appreo;
 
     @GetMapping("Index")
    public ModelAndView index() {
@@ -121,6 +124,35 @@ public class AdminController {
         mav.addObject( "user", users);
         return mav;
     }
+
+    @GetMapping("viewApp")
+    public ModelAndView getApp(){
+        ModelAndView mav = new ModelAndView("viewApp.html");
+        List<Appointment> appointments=this.appreo.findAll();
+        mav.addObject( "appointments", appointments);
+        return mav;
+    }
+    @PostMapping("deleteAppointment")
+    public RedirectView deleteAppointment(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+        try {
+            // Check if the doctor exists
+            Optional<Appointment> appointmentOptional = appreo.findById(id);
+            if (appointmentOptional.isPresent()) {
+                // Delete the doctor from the database
+                appreo.deleteById(id);
+                redirectAttributes.addFlashAttribute("successMessage", "Appointment deleted successfully.");
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "Appointment not found.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "An error occurred while deleting appointment.");
+        }
+        
+        // Redirect back to the view_doctors page after deletion
+        return new RedirectView("/Admin/Dashboard", true);
+    }
+    
 
     @GetMapping("specialities")
     public ModelAndView specialitiespage() {
@@ -408,6 +440,4 @@ List<Patient> patients = this.patientRepositry.findAll();
 mav.addObject("patients", patients);
 return mav;
 }
-//all users
-
 }

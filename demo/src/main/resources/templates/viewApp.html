@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/apporeview.css">
+    <title>Appointments</title>
+</head>
+
+<body>
+    <h2>Appointments</h2>
+    <a th:href="@{/Admin/Dashboard}" class="back-button">Back</a>
+    <table class="table table-hover table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Patient Name</th>
+                <th>Reason</th>
+                <th>Doctor</th>
+                <th>Nurse</th>
+                <!-- <th>Edit</th> -->
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="appointment : ${appointments}">
+                <td th:text="${appointment.id}"></td>
+                <td th:text="${appointment.appointmentDate}"></td>
+                <td th:text="${appointment.appointmentTime}"></td>
+                <td th:text="${appointment.patientName}"></td>
+                <td th:text="${appointment.reason}"></td>
+                <td th:text="${appointment.doctor.name}"></td>
+                <td th:text="${appointment.nurse.name}"></td>
+                <!-- <td><a th:href="@{/User/updateAppointment/{id}(id=${appointment.id})}" class="edit-button">Edit</a></td> -->
+                <td> <form th:action="@{deleteAppointment(id=${appointment.id})}" method="post" style="display:inline;">
+                    <button type="submit" class="delete-button">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

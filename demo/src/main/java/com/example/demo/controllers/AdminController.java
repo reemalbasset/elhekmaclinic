@@ -295,7 +295,7 @@ public class AdminController {
 
 
 @GetMapping("view_doctors")
-public ModelAndView getCourses() {
+public ModelAndView getdoctor() {
 ModelAndView mav = new ModelAndView("view_doctors.html");
 List<Doctor> doctor = this.doctorRepository.findAll();
 mav.addObject("doctors", doctor);

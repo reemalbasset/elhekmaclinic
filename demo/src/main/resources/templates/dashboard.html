@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+    <div th:include="sidebar"></div>
+    <div class="cardBox">
+        <div class="card">
+            <div>
+                <div class="numbers">10</div> <!-- Sample value -->
+                <div class="cardName">Appointments Today</div>
+            </div>
+            <div class="iconBx">
+                <ion-icon name="schedule-outline"></ion-icon>
+            </div>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="numbers">50</div> <!-- Sample value -->
+                <div class="cardName">Patients</div>
+            </div>
+            <div class="iconBx">
+                <ion-icon name="people-outline"></ion-icon>
+            </div>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="numbers">20</div>
+                <div class="cardName">Doctors</div>
+            </div>
+            <div class="iconBx">
+                <ion-icon name="people-outline"></ion-icon>
+            </div>
+        </div>
+
+        <div class="card">
+            <div>
+                <div class="numbers">30</div> <!-- Sample value -->
+                <div class="cardName">Nurses</div>
+            </div>
+            <div class="iconBx">
+                <ion-icon name="people-outline"></ion-icon>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.3/ionicons.min.js"></script>
+</body>
+</html>

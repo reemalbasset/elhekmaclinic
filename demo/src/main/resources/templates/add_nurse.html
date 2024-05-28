@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Nurse</title>
+    <link rel="stylesheet" href="../css/addNurse.css">
+</head>
+<body>
+    <div th:include="sidebar"></div>
+    <div class="container">
+        <h2>Add Nurse</h2>
+        <form id="registrationForm" method="POST" action="/Admin/addNurse" th:object="${nurse}">
+            <input type="hidden" name="action" value="addNurse">
+            <div class="form-group">
+                <label for="username">username</label>
+                <input type="text" id="username" name="username" th:field="*{username}" required placeholder="Enter userName">
+                <label for="name">Name</label>
+                <input type="text" id="name" th:field="*{name}" required placeholder="Enter Name">
+                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" th:field="*{email}" required placeholder="Enter Email">
+                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" th:field="*{password}" required placeholder="Enter Password">
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="submit-button">Add</button>
+            </div>
+        </form>
+    </div>
+    <script th:src="@{../js/addNurse.js}"></script>
+</body>
+</html>

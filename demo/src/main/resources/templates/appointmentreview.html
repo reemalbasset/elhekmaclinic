@@ -1,0 +1,29 @@
+<html xmlns:th="http://wwww.thymleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital@1&display=swap" rel="stylesheet">
+        <title>About us</title>
+        <link rel="stylesheet" href="../css/appointmentreview.css">
+    </head>
+    
+    <body>
+        <div th:include="navbar"></div>
+        <br><br><br>
+        <h1><span th:text="${session.username}"></span>'s appointments</h1>
+<br><br><br>
+
+<table id="customers">
+
+  <tr>
+    <th>Available Appointments</th>
+  </tr>
+
+</table>
+<br> 
+<br><br><br><br><br><br><br><br><br><br><br>
+    </body>
+    <div th:include="footer"></div>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient</title>
+    <link rel="stylesheet" href="../css/patient.css">
+</head>
+<body>
+    <h2>List Users</h2>
+    <table id="user">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>UserName</th>
+                <th>Password</th>
+                <th>DOB</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user: ${users}">
+                <td th:text="${user.id}"/>
+                <td th:text="${user.name}"/>
+                <td th:text="${user.username}"/>
+                <td th:text="${user.password}"/>
+                <td th:text="${user.dob}"/>
+
+            </tr>
+        </tbody>
+    </table>
+    <a href="./User/Registration">Add</a>
+</body>
+</html>

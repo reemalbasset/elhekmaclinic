@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/signup&login.css">
+    <link rel="stylesheet" href="../css/deleteConfirmation.css">
+    <title>Delete Account</title>
+    
+</head>
+<body>
+    <div th:include="navbar"></div>
+<div class="signup">
+    <p class="sign">Delete account</p>
+</div>
+<div class="body">
+    <div class="container">
+         <div class="message">Are you sure you want to delete your account, <span th:text="${session.username}"></span>? This action cannot be undone.</div>
+         
+        <div class="actions">
+            <form method="post" action="/User/Delete" style="display: inline;">
+                <button type="submit" class="btn btn-danger">Yes, Delete My Account</button>
+            </form>
+            <a href="/User/Profile" class="btn btn-secondary">No, Take Me Back</a>
+        </div>
+    </div>
+</div>
+<div th:include="footer"></div>
+</body>
+</html>

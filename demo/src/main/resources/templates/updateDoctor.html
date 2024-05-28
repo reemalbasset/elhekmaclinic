@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../css/updateDoctor.css">
+    <title>Edit Doctor</title>
+</head>
+
+<body>
+    <a th:href="@{/dashboard}" class="back-button">Back</a>
+    <div class="container">
+        <h1>Edit Doctor</h1>
+        <form th:action="@{/updateDoctor(id_new=${doctor.id})}" method="post" th:object="${doctor}">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required placeholder="Name" th:field="*{name}">
+                <span id="nameErrorMessage" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="Email" th:field="*{email}">
+                <span id="emailErrorMessage" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Password" th:field="*{password}">
+                <span id="passwordErrorMessage" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="specialty">Specialty</label>
+                <input type="text" id="specialty" name="specialty" required placeholder="Specialty" th:field="*{specialty}">
+                <span id="specialtyErrorMessage" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="universityName">University Name</label>
+                <input type="text" id="universityName" name="universityName" required placeholder="University Name" th:field="*{universityName}">
+                <span id="universityNameErrorMessage" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="submit-button" name="update_doctor" value="UPDATE">
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

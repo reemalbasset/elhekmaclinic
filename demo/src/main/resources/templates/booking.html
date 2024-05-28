@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/booking.css">
+    <title>Booking</title>
+</head>
+<body>
+    <div th:include="navbar"></div>
+    <div class="book1">
+        <button class="btext1"><a class="btext111" href="../">Home</a>/Booking</button>
+        <p class="btext2">Book an Appointment</p>
+    </div>
+    <br><br>
+    <div class="bookingform">
+        <form action="/booking" method="post">
+            <label for="doctor_id">Select Doctor:</label>
+            <select name="doctorId" required class="opt1">
+                <option value="">Select Doctor</option>
+                <th:block th:each="doctor : ${doctors}">
+                    <option th:value="${doctor.id}" th:text="${doctor.name}"></option>
+                </th:block>
+            </select><br><br>
+            
+            <label for="nurse_id">Select Nurse:</label>
+            <select name="nurseId" required class="opt1">
+                <option value="">Select Nurse</option>
+                <th:block th:each="nurse : ${nurses}">
+                    <option th:value="${nurse.id}" th:text="${nurse.name}"></option>
+                </th:block>
+            </select><br><br>
+            
+            <label for="patient_name">Patient Name:</label>
+            <input type="text" id="patient_name" name="patientName" required><br><br>
+            
+            <label for="appointment_date">Appointment Date:</label>
+            <input type="date" class="opt3" name="appointmentDate" required><br><br>
+            
+            <label for="appointment_time">Appointment Time:</label>
+            <input type="time" class="opt4" name="appointmentTimeStr" required><br><br>
+            <div th:if="${error}" style="color: red;">
+                <p th:text="${error}"></p>
+            </div>
+            
+            <label for="reason">Reason:</label>
+            <textarea name="reason" rows="4" cols="50" required></textarea><br><br>
+            
+            <input type="submit" class="submitbtn" value="Book Appointment">
+            <button class="cancelbtn"><a class="cancelbtn1" href="../">Cancel</a></button>
+        </form>
+    </div>
+    <div th:include="footer"></div>
+</body>
+</html>

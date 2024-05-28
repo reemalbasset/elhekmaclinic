@@ -1,0 +1,39 @@
+<html>
+<head>
+    <title>Registration</title>
+    <link rel="stylesheet" href="../css/signup&login.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/registrationValidation.js"></script>
+    <style>
+        /* Error message styling */
+        .error-message {
+            color: red;
+            font-size: 14px; /* Adjust font size as needed */
+            display: block; /* Display the error messages in a block */
+            margin-top: 5px; /* Add some space between input fields and error messages */
+        }
+    </style>
+</head>
+<body>
+    <div th:include="navbar"></div>
+    <div class="signup">
+        <h2 class="sign">Sign up</h2>
+    </div>
+    <div class="sign">
+        <form th:action="@{/User/Registration}" th:object="${user}" method="POST">
+            <input class="element" type="text" th:field="*{name}" placeholder="Enter Name">
+            <span id="nameError" class="error-message"></span>
+            <input type="text" class="element" id="username" th:field="*{username}" placeholder="Enter UserName">
+            <span id="usernameError" class="error-message"></span>
+            <input type="password" class="element" id="password" th:field="*{password}" placeholder="Enter Password">
+            <span id="passwordError" class="error-message"></span>
+            <input type="password" class="element" id="confirmPassword" placeholder="Confirm Password">
+            <span id="confirmPasswordError" class="error-message"></span>
+            <input type="date" class="element" id="dob" th:field="*{dob}" placeholder="Enter Date of Birth">
+            <span id="dobError" class="error-message"></span>            
+            <input class="submit" type="submit" value="signup">
+        </form>
+        <a href="Login" class="forgot">Already have an account? Login here</a>
+    </div>
+</body>
+</html>

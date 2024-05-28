@@ -1,0 +1,70 @@
+<html xmlns:th="http://wwww.thymleaf.org">
+    <head>
+        <title>Profile</title>
+        <link rel="stylesheet" href="../css/profile.css">
+    </head>
+    <body>
+        <div class="MAIN">
+          <div th:include="navbar"></div>
+            <div class="signup">
+              <h1 class="sign">Welcome</h1>
+          </div>
+          <div class="all-1">
+    <div class="all">
+        <p>Welcome,<span th:text="${session.username}"></span>!</p>
+
+    </div>    
+            
+          <div class="right-nav">
+                 <nav class="profile-nav">
+                  <ul>
+                    <li>
+                        <a href="../">
+                            <i class="fa-solid fa-house"></i>
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/booking">
+                            <i class="fa-regular fa-calendar-check"></i>
+                            Book appointment
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/appointmentreview">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                            History
+                        </a>
+                    </li>
+                    <li th:if="${session.role eq 'Admin'}">
+                      <a href="/Admin/Dashboard">
+                          <i class="fa-solid fa-chart-bar"></i>
+                          Dashboard
+                      </a>
+                  </li>                  
+                    <li>
+                      <a href="EditProfile">
+                        <i class="fa-regular fa-pen-to-square" ></i>
+                        Edit Profile
+                      </a>
+                    </li>
+                    <li>
+                        <a href="logout">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            Logout
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/deleteaccount">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            delete account
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<div th:include="footer"></div>
+</body>
+</html>

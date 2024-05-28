@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Nurses</title>
+    <link rel="stylesheet" href="../css/viewNurse.css">
+</head>
+
+<body>
+    <h2>All Nurses</h2>
+    <a th:href="@{/Admin/Dashboard}" class="back-button">Back</a>
+    <table class="table table-hover table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tr th:each="Nurse : ${Nurses}">
+            <td th:text="${Nurse.id}"></td>
+            <td th:text="${Nurse.name}"></td>
+            <td th:text="${Nurse.email}"></td>
+            <td><a th:href="@{/Admin/updateNurse/{id}(id=${Nurse.id})}" class="edit-button">Edit</a></td>
+            <td> <form th:action="@{/Admin/deleteNurse(id=${Nurse.id})}" method="post" style="display:inline;">
+                <button type="submit" class="delete-button">Delete</button>
+        </tr>
+    </table>
+</body>
+
+</html>

@@ -20,6 +20,18 @@
     font-size: 16px;
 }
 
+.edit-button {
+  display: inline-block;
+  padding: 5px 10px;
+  /* Red color */
+  /* color: rgb(255, 1, 1); */
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
 .back-button:hover {
     background-color: #45a049;
 }
@@ -57,12 +69,14 @@
         <td th:text="${appointment.reason}"></td>
         <td th:text="${appointment.doctor.name}"></td>
         <td th:text="${appointment.nurse.name}"></td>
-        
-          <td> <form th:action="@{deleteAppointment(id=${appointment.id})}" method="post" style="display:inline;">
-            <button type="submit" class="delete-button" style="background-color: red;">Delete</button>
-        </form>
-        
+        <td>
+            <form th:action="@{/deleteAppointment(id=${appointment.id})}" method="post" style="display:inline;">
+                <button type="submit" class="delete-button" style="background-color: red;">Delete</button>
             </form>
+            <form th:action="@{/editAppointment(id=${appointment.id})}" method="get" style="display:inline;">
+                <button type="submit" class="edit-button" style="background-color: green;">Edit</button>
+            </form>
+            
         </td>
     </tr>
 </tbody>

@@ -141,7 +141,7 @@ public String appointmentReviewPageNur(HttpSession session, Model model) {
    @PostMapping("deleteAppointment")
 public RedirectView deleteAppointment(@RequestParam Long id, RedirectAttributes redirectAttributes) {
     try {
-        // Check if the doctor exists
+       
         Optional<Appointment> appointmentOptional = appointmentRepository.findById(id);
         if (appointmentOptional.isPresent()) {
             // Delete the doctor from the database
@@ -216,6 +216,7 @@ public RedirectView deleteAppointment(@RequestParam Long id, RedirectAttributes 
             }
     
             String username = (String) session.getAttribute("username");
+           
             User user = userRepository.findByUsername(username);
     
             Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new IllegalArgumentException("Invalid doctor ID"));
@@ -231,7 +232,6 @@ public RedirectView deleteAppointment(@RequestParam Long id, RedirectAttributes 
             appointment.setUsername(username);
             appointment.setDoctorUsername(doctor.getUsername()); // Assuming Doctor has a getUsername method
             appointment.setNurseUsername(nurse.getUsername()); // Assuming Nurse has a getUsername method
-    
             appointmentRepository.save(appointment);
             return "redirect:/appointmentreview";
     
@@ -260,6 +260,105 @@ public RedirectView deleteAppointment(@RequestParam Long id, RedirectAttributes 
         return "booking";
     }
     
+    @GetMapping("/editAppointment")
+public String editAppointment(@RequestParam Long id, Model model, RedirectAttributes redirectAttributes) {
+    Optional<Appointment> appointmentOptional = appointmentRepository.findById(id);
+    if (appointmentOptional.isPresent()) {
+        Appointment appointment = appointmentOptional.get();
+        List<Doctor> doctors = doctorRepository.findAll();
+        List<Nurse> nurses = nurseRepository.findAll();
+        
+        model.addAttribute("appointment", appointment);
+        model.addAttribute("doctors", doctors);
+        model.addAttribute("nurses", nurses);
+        model.addAttribute("id", id); // Add ID to the model
+        
+        return "editBooking";
+    } else {
+        redirectAttributes.addFlashAttribute("errorMessage", "Appointment not found.");
+        return "redirect:/User/Profile";
+    }
+}
+
+    
+
+@PostMapping("/updateAppointment")
+public String updateAppointment(
+        @RequestParam Long id,
+        @RequestParam Long doctorId,
+        @RequestParam Long nurseId,
+        @RequestParam String patientName,
+        @RequestParam Date appointmentDate,
+        @RequestParam String appointmentTimeStr,
+        @RequestParam String reason,
+        Model model) {
+
+    try {
+        LocalDate currentDate = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+        LocalDate selectedDate = appointmentDate.toLocalDate();
+        LocalTime selectedTime;
+
+        try {
+            selectedTime = LocalTime.parse(appointmentTimeStr);
+        } catch (DateTimeParseException e) {
+            model.addAttribute("error", "Invalid time format. Please use HH:mm format.");
+            return "editBooking";
+        }
+
+        if (selectedDate.isBefore(currentDate) || (selectedDate.isEqual(currentDate) && selectedTime.isBefore(currentTime))) {
+            throw new IllegalArgumentException("You cannot book an appointment in the past.");
+        }
+
+        LocalTime oneHourAhead = selectedTime.plusHours(1);
+        LocalTime oneHourBefore = selectedTime.minusHours(1);
+
+        List<Appointment> appointments = appointmentRepository.findByAppointmentDateAndAppointmentTimeBetween(
+                appointmentDate, Time.valueOf(oneHourBefore), Time.valueOf(oneHourAhead));
+        if (!appointments.isEmpty()) {
+            throw new IllegalArgumentException("There is already an appointment within an hour of the selected time. Please choose a different time.");
+        }
+
+        Optional<Appointment> existingAppointment = appointmentRepository.findByDoctorIdAndAppointmentDateAndAppointmentTime(
+                doctorId, appointmentDate, Time.valueOf(selectedTime));
+        if (existingAppointment.isPresent() && !existingAppointment.get().getId().equals(id)) {
+            throw new IllegalArgumentException("The selected time slot is already booked. Please choose a different time.");
+        }
+
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid appointment ID: " + id));
+
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid doctor ID"));
+        Nurse nurse = nurseRepository.findById(nurseId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid nurse ID"));
+
+        // Update doctor and nurse usernames
+        appointment.setDoctor(doctor);
+        appointment.setNurse(nurse);
+
+        // Set other appointment details
+        appointment.setPatientName(patientName);
+        appointment.setAppointmentDate(appointmentDate);
+        appointment.setAppointmentTime(Time.valueOf(selectedTime));
+        appointment.setReason(reason);
+        appointment.setDoctorUsername(doctor.getUsername()); // Assuming Doctor has a getUsername method
+        appointment.setNurseUsername(nurse.getUsername()); // Assuming Nurse has a getUsername method
+
+        appointmentRepository.save(appointment);
+
+        return  "redirect:/User/Profile"; // Fixed the redirection URL
+
+    } catch (IllegalArgumentException e) {
+        model.addAttribute("error", e.getMessage());
+        return "editBooking";
+    } catch (Exception e) {
+        model.addAttribute("error", "An unexpected error occurred: " + e.getMessage());
+        return "editBooking";
+    }
+}
+
+
     @GetMapping("/deleteaccount")
     public ModelAndView deleteaccountpageIndex() {
         return new ModelAndView("deleteConfirmation.html");

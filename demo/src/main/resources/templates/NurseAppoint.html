@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor's Appointments</title>
+    <link rel="stylesheet" href="../css/appointmentreview.css">
+    <style>
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #4CAF50; /* Green */
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+        }
+        
+    </style>
+</head>
+<body>
+    <div th:include="navbar"></div>
+    <br><br><br>
+    <h1>Nurse's Appointments</h1>
+    <br><br><br>
+
+    <table id="customers">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Patient Name</th>
+            <th>Reason</th>
+            <th>Doctor</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="appointment : ${appointments}">
+            <td th:text="${appointment.appointmentDate}"></td>
+            <td th:text="${appointment.appointmentTime}"></td>
+            <td th:text="${appointment.patientName}"></td>
+            <td th:text="${appointment.reason}"></td>
+            <td th:text="${appointment.doctor.name}"></td>
+            <td>
+                <form th:action="@{/deleteAppointment(id=${appointment.id})}" method="post" style="display:inline;">
+                    <button type="submit" class="delete-button" style="background-color: red;">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br>
+    <a href="/User/Profile" class="back-button">Back to Profile</a>
+    <br><br><br><br><br><br><br><br><br><br><br>
+    <div th:include="footer"></div>
+</body>
+</html>

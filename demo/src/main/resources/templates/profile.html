@@ -44,10 +44,16 @@
                   </li>      
                   <li th:if="${session.role eq 'Doctor'}">
                     <a href="/DoctorAppoint">
-                        <i class="fa-solid fa-chart-bar"></i>
+                        <i class="fa-solid fa-clock-rotate-left"></i>
                         Doctor Appointment
                     </a>
-                </li>                  
+                </li>         
+                <li th:if="${session.role eq 'Nurse'}">
+                    <a href="/NurseAppoint">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        Nurse Appointment
+                    </a>
+                </li>                 
                     <li>
                       <a href="EditProfile">
                         <i class="fa-regular fa-pen-to-square" ></i>

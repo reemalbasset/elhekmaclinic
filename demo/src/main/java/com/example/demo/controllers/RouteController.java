@@ -94,6 +94,29 @@ public String appointmentReviewPageDr(HttpSession session, Model model) {
     return "DoctorAppoint"; // The name of the view to display the doctor's appointments
 }
 
+@GetMapping("/NurseAppoint")
+public String appointmentReviewPageNur(HttpSession session, Model model) {
+    String username = (String) session.getAttribute("username");
+    String role = (String) session.getAttribute("role");
+
+    if (username == null || role == null || !"NURSE".equalsIgnoreCase(role)) {
+        model.addAttribute("error", "User is not logged in or not authorized.");
+        return "login"; // Redirect to login page if the user is not logged in or not a doctor
+    }
+
+    // Doctor doctor = doctorRepository.findByUsername(username);
+    // if (doctor == null) {
+    //     model.addAttribute("error", "Doctor not found.");
+    //     return "error"; // Redirect to an error page if the doctor is not found
+    // }
+
+    List<Appointment> appointments = appointmentRepository.findByNurseUsername(username);
+
+    model.addAttribute("appointments", appointments);
+
+    return "NurseAppoint"; // The name of the view to display the doctor's appointments
+}
+
 
     @GetMapping("/User/appointmentreview")
     public ModelAndView appointmentreviewpageusr() {

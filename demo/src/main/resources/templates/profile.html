@@ -41,7 +41,13 @@
                           <i class="fa-solid fa-chart-bar"></i>
                           Dashboard
                       </a>
-                  </li>                  
+                  </li>      
+                  <li th:if="${session.role eq 'Doctor'}">
+                    <a href="/DoctorAppoint">
+                        <i class="fa-solid fa-chart-bar"></i>
+                        Doctor Appointment
+                    </a>
+                </li>                  
                     <li>
                       <a href="EditProfile">
                         <i class="fa-regular fa-pen-to-square" ></i>

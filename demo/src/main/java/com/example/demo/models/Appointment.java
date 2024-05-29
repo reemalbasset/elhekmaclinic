@@ -23,46 +23,20 @@ public class Appointment {
     private Nurse nurse;
 
     private String patientName;
-
     private Date appointmentDate;
-
     private Time appointmentTime;
-
     private String reason;
-
-    private Long user_id;
-
-    public Appointment(Long id, Doctor doctor, Nurse nurse, String patientName, Date appointmentDate, Time appointmentTime, String reason, Long user_id, String username) {
-        this.id = id;
-        this.doctor = doctor;
-        this.nurse = nurse;
-        this.patientName = patientName;
-        this.appointmentDate = appointmentDate;
-        this.appointmentTime = appointmentTime;
-        this.reason = reason;
-        this.user_id = user_id;
-        this.username = username;
-    }
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Appointment username(String username) {
-        setUsername(username);
-        return this;
-    }
+    private Long userId;
     private String username;
+    private String doctorUsername;
+    private String nurseUsername;
+
 
 
     public Appointment() {
     }
 
-    public Appointment(Long id, Doctor doctor, Nurse nurse, String patientName, Date appointmentDate, Time appointmentTime, String reason, Long user_id) {
+    public Appointment(Long id, Doctor doctor, Nurse nurse, String patientName, Date appointmentDate, Time appointmentTime, String reason, Long userId, String username, String doctorUsername, String nurseUsername) {
         this.id = id;
         this.doctor = doctor;
         this.nurse = nurse;
@@ -70,7 +44,10 @@ public class Appointment {
         this.appointmentDate = appointmentDate;
         this.appointmentTime = appointmentTime;
         this.reason = reason;
-        this.user_id = user_id;
+        this.userId = userId;
+        this.username = username;
+        this.doctorUsername = doctorUsername;
+        this.nurseUsername = nurseUsername;
     }
 
     public Long getId() {
@@ -129,12 +106,36 @@ public class Appointment {
         this.reason = reason;
     }
 
-    public Long getUser_id() {
-        return this.user_id;
+    public Long getUserId() {
+        return this.userId;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getDoctorUsername() {
+        return this.doctorUsername;
+    }
+
+    public void setDoctorUsername(String doctorUsername) {
+        this.doctorUsername = doctorUsername;
+    }
+
+    public String getNurseUsername() {
+        return this.nurseUsername;
+    }
+
+    public void setNurseUsername(String nurseUsername) {
+        this.nurseUsername = nurseUsername;
     }
 
     public Appointment id(Long id) {
@@ -172,8 +173,23 @@ public class Appointment {
         return this;
     }
 
-    public Appointment user_id(Long user_id) {
-        setUser_id(user_id);
+    public Appointment userId(Long userId) {
+        setUserId(userId);
+        return this;
+    }
+
+    public Appointment username(String username) {
+        setUsername(username);
+        return this;
+    }
+
+    public Appointment doctorUsername(String doctorUsername) {
+        setDoctorUsername(doctorUsername);
+        return this;
+    }
+
+    public Appointment nurseUsername(String nurseUsername) {
+        setNurseUsername(nurseUsername);
         return this;
     }
 
@@ -185,12 +201,12 @@ public class Appointment {
             return false;
         }
         Appointment appointment = (Appointment) o;
-        return Objects.equals(id, appointment.id) && Objects.equals(doctor, appointment.doctor) && Objects.equals(nurse, appointment.nurse) && Objects.equals(patientName, appointment.patientName) && Objects.equals(appointmentDate, appointment.appointmentDate) && Objects.equals(appointmentTime, appointment.appointmentTime) && Objects.equals(reason, appointment.reason) && Objects.equals(user_id, appointment.user_id);
+        return Objects.equals(id, appointment.id) && Objects.equals(doctor, appointment.doctor) && Objects.equals(nurse, appointment.nurse) && Objects.equals(patientName, appointment.patientName) && Objects.equals(appointmentDate, appointment.appointmentDate) && Objects.equals(appointmentTime, appointment.appointmentTime) && Objects.equals(reason, appointment.reason) && Objects.equals(userId, appointment.userId) && Objects.equals(username, appointment.username) && Objects.equals(doctorUsername, appointment.doctorUsername) && Objects.equals(nurseUsername, appointment.nurseUsername);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, doctor, nurse, patientName, appointmentDate, appointmentTime, reason, user_id);
+        return Objects.hash(id, doctor, nurse, patientName, appointmentDate, appointmentTime, reason, userId, username, doctorUsername, nurseUsername);
     }
 
     @Override
@@ -203,9 +219,13 @@ public class Appointment {
             ", appointmentDate='" + getAppointmentDate() + "'" +
             ", appointmentTime='" + getAppointmentTime() + "'" +
             ", reason='" + getReason() + "'" +
-            ", user_id='" + getUser_id() + "'" +
+            ", userId='" + getUserId() + "'" +
+            ", username='" + getUsername() + "'" +
+            ", doctorUsername='" + getDoctorUsername() + "'" +
+            ", nurseUsername='" + getNurseUsername() + "'" +
             "}";
     }
+   
     
     
 }

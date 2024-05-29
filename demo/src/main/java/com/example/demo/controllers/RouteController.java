@@ -71,6 +71,30 @@ public class RouteController {
         return new ModelAndView("doctorsdetails.html");
     }
 
+    @GetMapping("/DoctorAppoint")
+public String appointmentReviewPageDr(HttpSession session, Model model) {
+    String username = (String) session.getAttribute("username");
+    String role = (String) session.getAttribute("role");
+
+    if (username == null || role == null || !"DOCTOR".equalsIgnoreCase(role)) {
+        model.addAttribute("error", "User is not logged in or not authorized.");
+        return "login"; // Redirect to login page if the user is not logged in or not a doctor
+    }
+
+    // Doctor doctor = doctorRepository.findByUsername(username);
+    // if (doctor == null) {
+    //     model.addAttribute("error", "Doctor not found.");
+    //     return "error"; // Redirect to an error page if the doctor is not found
+    // }
+
+    List<Appointment> appointments = appointmentRepository.findByDoctorUsername(username);
+
+    model.addAttribute("appointments", appointments);
+
+    return "DoctorAppoint"; // The name of the view to display the doctor's appointments
+}
+
+
     @GetMapping("/User/appointmentreview")
     public ModelAndView appointmentreviewpageusr() {
         return new ModelAndView("appointmentreview.html");
@@ -122,8 +146,9 @@ public RedirectView deleteAppointment(@RequestParam Long id, RedirectAttributes 
         return getBookingPageModelAndView(new ModelAndView("booking.html"));
     }
 
-@Autowired
-private UserRepositry userRepositry;
+    @Autowired
+    private UserRepositry userRepository;
+    
     @PostMapping("/booking")
     public String bookAppointment(
             @RequestParam Long doctorId,
@@ -134,44 +159,45 @@ private UserRepositry userRepositry;
             @RequestParam String reason,
             HttpSession session,
             Model model) {
-
+    
         try {
             LocalDate currentDate = LocalDate.now();
             LocalTime currentTime = LocalTime.now();
             LocalDate selectedDate = appointmentDate.toLocalDate();
             LocalTime selectedTime;
-
+    
             try {
                 selectedTime = LocalTime.parse(appointmentTimeStr);
             } catch (DateTimeParseException e) {
                 model.addAttribute("error", "Invalid time format. Please use HH:mm format.");
                 return getBookingPage(model);
             }
-
+    
             if (selectedDate.isBefore(currentDate) || (selectedDate.isEqual(currentDate) && selectedTime.isBefore(currentTime))) {
                 throw new IllegalArgumentException("You cannot book an appointment in the past.");
             }
-
+    
             LocalTime oneHourAhead = selectedTime.plusHours(1);
             LocalTime oneHourBefore = selectedTime.minusHours(1);
-
+    
             List<Appointment> appointments = appointmentRepository.findByAppointmentDateAndAppointmentTimeBetween(
                     appointmentDate, Time.valueOf(oneHourBefore), Time.valueOf(oneHourAhead));
             if (!appointments.isEmpty()) {
                 throw new IllegalArgumentException("There is already an appointment within an hour of the selected time. Please choose a different time.");
             }
-
+    
             Optional<Appointment> existingAppointment = appointmentRepository.findByDoctorIdAndAppointmentDateAndAppointmentTime(
                     doctorId, appointmentDate, Time.valueOf(selectedTime));
             if (existingAppointment.isPresent()) {
                 throw new IllegalArgumentException("The selected time slot is already booked. Please choose a different time.");
             }
+    
             String username = (String) session.getAttribute("username");
-         User user = userRepositry.findByUsername(username);
-
+            User user = userRepository.findByUsername(username);
+    
             Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new IllegalArgumentException("Invalid doctor ID"));
             Nurse nurse = nurseRepository.findById(nurseId).orElseThrow(() -> new IllegalArgumentException("Invalid nurse ID"));
-
+    
             Appointment appointment = new Appointment();
             appointment.setDoctor(doctor);
             appointment.setNurse(nurse);
@@ -180,10 +206,12 @@ private UserRepositry userRepositry;
             appointment.setAppointmentTime(Time.valueOf(selectedTime));
             appointment.setReason(reason);
             appointment.setUsername(username);
-
+            appointment.setDoctorUsername(doctor.getUsername()); // Assuming Doctor has a getUsername method
+            appointment.setNurseUsername(nurse.getUsername()); // Assuming Nurse has a getUsername method
+    
             appointmentRepository.save(appointment);
             return "redirect:/appointmentreview";
-
+    
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
             return getBookingPage(model);
@@ -192,7 +220,7 @@ private UserRepositry userRepositry;
             return getBookingPage(model);
         }
     }
-
+    
     private ModelAndView getBookingPageModelAndView(ModelAndView mav) {
         List<Doctor> doctors = doctorRepository.findAll();
         List<Nurse> nurses = nurseRepository.findAll();
@@ -200,7 +228,7 @@ private UserRepositry userRepositry;
         mav.addObject("nurses", nurses);
         return mav;
     }
-
+    
     private String getBookingPage(Model model) {
         List<Doctor> doctors = doctorRepository.findAll();
         List<Nurse> nurses = nurseRepository.findAll();
@@ -208,6 +236,7 @@ private UserRepositry userRepositry;
         model.addAttribute("nurses", nurses);
         return "booking";
     }
+    
     @GetMapping("/deleteaccount")
     public ModelAndView deleteaccountpageIndex() {
         return new ModelAndView("deleteConfirmation.html");

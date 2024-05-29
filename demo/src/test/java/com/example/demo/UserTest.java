@@ -76,7 +76,7 @@ public class UserTest {
 
         // Assert the view name
         assertEquals("login.html", mav.getViewName());
-        // Verify that userRepository.save() method is called once with the user object
+        // Verify that userRepository.save() method is called once in the mock object with the user object 
         verify(userRepository, times(1)).save(user);
     }
 
